@@ -13,21 +13,24 @@ runs:
   using: "composite"
   steps:
     - shell: bash
+      env:
+        BRANCH: ${{ inputs.branch }}
+        FILES: ${{ inputs.files }}
       run: |
-        git branch -D "$branch" || true
+        git branch -D "$BRANCH" || true
         git worktree remove -f .upload_orphan_worktree || true
         git worktree add --detach .upload_orphan_worktree
         (
           cd .upload_orphan_worktree
-          git switch --orphan "$branch"
+          git switch --orphan "$BRANCH"
           git reset --hard
-          for file in $files; do
+          for file in $FILES; do
             cp ../"$file" .
             git add "$file"
           done
           git -c user.name="github-actions[bot]" \
             -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit --allow-empty -m "upload"
-          git push -f origin HEAD:"$branch"
+          git push -f origin HEAD:"$BRANCH"
         )
         git worktree remove -f .upload_orphan_worktree

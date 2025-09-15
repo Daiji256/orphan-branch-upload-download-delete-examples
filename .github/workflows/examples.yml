@@ -38,3 +38,12 @@ jobs:
         with:
           branch: _orphan_branch
           files: ${{ steps.find-files.outputs.files }}
+
+      - uses: ./.github/workflows/download-from-orphan-branch
+        with:
+          branch: _orphan_branch
+          path: download
+
+      - shell: bash
+        run: |
+          ls download

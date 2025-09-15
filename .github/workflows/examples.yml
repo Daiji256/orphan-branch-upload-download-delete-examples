@@ -1,0 +1,36 @@
+name: examples
+
+on: pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  examples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - shell: bash
+        run: |
+          touch foo
+          touch bar
+          touch foobar
+
+      - id: find-files
+        shell: bash
+        run: |
+          files=$(find . -type f -name "*bar")
+          echo "files=$files" >> $GITHUB_OUTPUT
+
+      - uses: ./.github/workflows/upload-to-orphan-branch
+        with:
+          branch: _orphan_branch
+          files: ${{ steps.find-files.outputs.files }}

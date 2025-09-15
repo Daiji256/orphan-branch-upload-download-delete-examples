@@ -1,0 +1,23 @@
+name: download-from-orphan-branch
+description: todo
+
+inputs:
+  branch:
+    description: todo
+    required: true
+  path:
+    description: todo
+    required: false
+    default: "./"
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      env:
+        BRANCH: ${{ inputs.branch }}
+        PATH: ${{ inputs.path }}
+      run: |
+        mkdir -p "$PATH"
+        git fetch origin "$BRANCH"
+        git --work-tree="$PATH" checkout origin/"$BRANCH" -- .

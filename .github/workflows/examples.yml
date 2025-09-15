@@ -28,7 +28,11 @@ jobs:
         shell: bash
         run: |
           files=$(find . -type f -name "*bar")
-          echo "files=$files" >> $GITHUB_OUTPUT
+          {
+            echo "files<<EOF"
+            echo "$files"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - uses: ./.github/workflows/upload-to-orphan-branch
         with:

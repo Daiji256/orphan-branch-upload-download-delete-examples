@@ -1,0 +1,33 @@
+name: upload-to-orphan-branch
+description: todo
+
+inputs:
+  branch:
+    description: todo
+    required: true
+  files:
+    description: todo
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        git branch -D "$branch" || true
+        git worktree remove -f .upload_orphan_worktree || true
+        git worktree add --detach .upload_orphan_worktree
+        (
+          cd .upload_orphan_worktree
+          git switch --orphan "$branch"
+          git reset --hard
+          for file in $files; do
+            cp ../"$file" .
+            git add "$file"
+          done
+          git -c user.name="github-actions[bot]" \
+            -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit --allow-empty -m "upload"
+          git push -f origin HEAD:"$branch"
+        )
+        git worktree remove -f .upload_orphan_worktree

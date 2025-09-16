@@ -39,16 +39,11 @@ jobs:
           branch: _orphan_branch
           files: ${{ steps.find-files.outputs.files }}
 
-      - shell: bash
-        run: |
-          rm foo
-          rm bar
-          rm foobar
-
       - uses: ./.github/workflows/download-from-orphan-branch
         with:
           branch: _orphan_branch
+          path: .download
 
       - shell: bash
         run: |
-          ls
+          ls .download

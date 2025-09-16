@@ -16,8 +16,8 @@ runs:
     - shell: bash
       env:
         BRANCH: ${{ inputs.branch }}
-        PATH: ${{ inputs.path }}
+        DOWNLOAD_PATH: ${{ inputs.path }}
       run: |
-        mkdir -p "$PATH"
+        mkdir -p "$DOWNLOAD_PATH"
         git fetch origin "$BRANCH"
-        git --work-tree="$PATH" checkout origin/"$BRANCH" -- .
+        git --work-tree="$DOWNLOAD_PATH" checkout origin/"$BRANCH" -- .

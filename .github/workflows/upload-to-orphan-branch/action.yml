@@ -8,6 +8,18 @@ inputs:
   files:
     description: todo
     required: true
+  user-name:
+    description: todo
+    required: false
+    default: "github-actions[bot]"
+  user-email:
+    description: todo
+    required: false
+    default: "41898282+github-actions[bot]@users.noreply.github.com"
+  commit-message:
+    description: todo
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -16,6 +28,9 @@ runs:
       env:
         BRANCH: ${{ inputs.branch }}
         FILES: ${{ inputs.files }}
+        USER_NAME: ${{ inputs.user-name }}
+        USER_EMAIL: ${{ inputs.user-email }}
+        COMMIT_MESSAGE: ${{ inputs.commit-message }}
       run: |
         git branch -D "$BRANCH" || true
         git worktree remove -f .upload_orphan_worktree || true
@@ -28,9 +43,9 @@ runs:
             cp ../"$file" .
             git add "$file"
           done
-          git -c user.name="github-actions[bot]" \
-            -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit --allow-empty -m "upload"
+          git -c user.name="$USER_NAME" \
+            -c user.email="$USER_EMAIL" \
+            commit --allow-empty --allow-empty-message -m "$COMMIT_MESSAGE"
           git push -f origin HEAD:"$BRANCH"
         )
         git worktree remove -f .upload_orphan_worktree

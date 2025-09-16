@@ -42,8 +42,8 @@ jobs:
       - uses: ./.github/workflows/download-from-orphan-branch
         with:
           branch: _orphan_branch
-          path: download
+          path: .download
 
       - shell: bash
         run: |
-          ls download
+          ls .download

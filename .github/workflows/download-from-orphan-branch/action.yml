@@ -20,4 +20,4 @@ runs:
       run: |
         mkdir -p "$DOWNLOAD_PATH"
         git fetch origin "$BRANCH"
-        git --work-tree="$DOWNLOAD_PATH" checkout origin/"$BRANCH" -- .
+        git "--work-tree=$DOWNLOAD_PATH" checkout "origin/$BRANCH" -- .

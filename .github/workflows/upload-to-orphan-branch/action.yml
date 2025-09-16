@@ -40,12 +40,12 @@ runs:
           git switch --orphan "$BRANCH"
           git reset --hard
           for file in $FILES; do
-            cp ../"$file" .
+            cp "../$file" .
             git add "$file"
           done
-          git -c user.name="$USER_NAME" \
-            -c user.email="$USER_EMAIL" \
+          git -c "user.name=$USER_NAME" \
+            -c "user.email=$USER_EMAIL" \
             commit --allow-empty --allow-empty-message -m "$COMMIT_MESSAGE"
-          git push -f origin HEAD:"$BRANCH"
+          git push -f origin "HEAD:$BRANCH"
         )
         git worktree remove -f .upload_orphan_worktree

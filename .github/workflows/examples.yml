@@ -18,6 +18,7 @@ jobs:
       COMMITTER_NAME: github-actions[bot]
       COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
       COMMIT_MESSAGE: examples
+      MAX_AGE_SECONDS: 600
 
     steps:
       - uses: actions/checkout@v5
@@ -61,3 +62,28 @@ jobs:
       - shell: bash
         run: |
           ls .download
+
+      - shell: bash
+        run: |
+          now=$(date +%s)
+          for branch in $(git branch -r --format="%(refname:lstrip=3)"); do
+            if ! [[ "$branch" =~ "$BRANCH_PREFIX"* ]]; then continue; fi
+
+            commit_count=$(git rev-list --count "origin/$branch")
+            if [ "$commit_count" -ne 1 ]; then continue; fi
+
+            committer_name=$(git log -1 --format=%an "origin/$branch")
+            if [ "$committer_name" != "$COMMITTER_NAME" ]; then continue; fi
+
+            committer_email=$(git log -1 --format=%ae "origin/$branch")
+            if [ "$committer_email" != "$COMMITTER_EMAIL" ]; then continue; fi
+
+            commit_message=$(git log -1 --format=%s "origin/$branch")
+            if [ "$commit_message" != "$COMMIT_MESSAGE" ]; then continue; fi
+
+            commit_date=$(git log -1 --format=%ct "origin/$branch")
+            age=$((now - commit_date))
+            if [ "$age" -lt "$MAX_AGE_SECONDS" ]; then continue; fi
+
+            git push origin --delete "$branch"
+          done

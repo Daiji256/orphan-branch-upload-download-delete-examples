@@ -37,12 +37,15 @@ runs:
         git worktree add --detach .upload_orphan_worktree
         declare -A files=()
         for file_path in $FILES_PATH; do
+          echo "Processing path: $file_path"
           if [[ "${file_path:0:1}" == "!" ]]; then
             for file in $(find ${file_path:1} -type f); do
+              echo "Excluding file: $file"
               unset files["$file"]
             done
           else
             for file in $(find $file_path -type f); do
+              echo "Including file: $file"
               files["$file"]=1
             done
           fi

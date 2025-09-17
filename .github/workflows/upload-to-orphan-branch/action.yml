@@ -32,12 +32,6 @@ runs:
         COMMITTER_EMAIL: ${{ inputs.comitter-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
       run: |
-        echo "BRANCH=$BRANCH"
-        echo "FILES=$FILES"
-        echo "COMMITTER_NAME=$COMMITTER_NAME"
-        echo "COMMITTER_EMAIL=$COMMITTER_EMAIL"
-        echo "COMMIT_MESSAGE=$COMMIT_MESSAGE"
-
         git branch -D "$BRANCH" || true
         git worktree remove -f .upload_orphan_worktree || true
         git worktree add --detach .upload_orphan_worktree

@@ -29,7 +29,7 @@ runs:
         BRANCH: ${{ inputs.branch }}
         FILES: ${{ inputs.files }}
         COMMITTER_NAME: ${{ inputs.comitter-name }}
-        COMMITTER_EMAIL: ${{ inputs.user-email }}
+        COMMITTER_EMAIL: ${{ inputs.comitter-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
       run: |
         echo "BRANCH=$BRANCH"

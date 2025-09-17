@@ -29,9 +29,11 @@ jobs:
       - name: make some files
         shell: bash
         run: |
-          touch foo
-          touch bar
-          touch foobar
+          touch {foo,bar,foobar}
+          mkdir -p dir
+          touch dir/{foo,foobar}
+          mkdir -p dir1/dir2/dir3/foobar
+          touch dir1/dir2/dir3/foobar/{foo.txt,bar.md}
 
       - name: get now
         id: now
@@ -39,25 +41,18 @@ jobs:
         run: |
           echo "now=$(date +%s)" >> $GITHUB_OUTPUT
 
-      - name: find files
-        id: find-files
-        shell: bash
-        run: |
-          files=$(find . -type f -name "*bar")
-          {
-            echo "files<<EOF"
-            echo "$files"
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
-
       - name: upload to orphan branch
         uses: ./.github/workflows/upload-to-orphan-branch
         with:
           branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
-          files: ${{ steps.find-files.outputs.files }}
           comitter-name: ${{ env.COMMITTER_NAME }}
           comitter-email: ${{ env.COMMITTER_EMAIL }}
           commit-message: ${{ env.COMMIT_MESSAGE }}
+          path: |
+            *bar
+            dir1/**/?oo[abc]ar/*.txt
+            !foobar
+            dir/
 
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch

@@ -5,7 +5,7 @@ inputs:
   branch:
     description: todo
     required: true
-  files:
+  path:
     description: todo
     required: true
   comitter-name:
@@ -27,7 +27,7 @@ runs:
     - shell: bash
       env:
         BRANCH: ${{ inputs.branch }}
-        FILES: ${{ inputs.files }}
+        FILES_PATH: ${{ inputs.path }}
         COMMITTER_NAME: ${{ inputs.comitter-name }}
         COMMITTER_EMAIL: ${{ inputs.comitter-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
@@ -39,7 +39,19 @@ runs:
           cd .upload_orphan_worktree
           git switch --orphan "$BRANCH"
           git reset --hard
-          for file in $FILES; do
+          declare -A files=()
+          for file_path in $FILES_PATH; do
+            if [[ "${file_path:0:1}" == "!" ]]; then
+              for file in $(find ${file_path:1} -type f); do
+                unset files["$file"]
+              done
+            else
+              for file in $(find $file_path -type f); do
+                files["$file"]=1
+              done
+            fi
+          done
+          for file in "${!files[@]}"; do
             cp "../$file" .
             git add "$file"
           done

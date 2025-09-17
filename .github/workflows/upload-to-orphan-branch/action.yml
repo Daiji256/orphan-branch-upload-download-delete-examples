@@ -52,7 +52,7 @@ runs:
           git switch --orphan "$BRANCH"
           git reset --hard
           for file in "${!files[@]}"; do
-            cp "$GITHUB_WORKSPACE/$file" .
+            cp "../$file" .
             git add "$file"
           done
           git -c "user.name=$COMMITTER_NAME" \

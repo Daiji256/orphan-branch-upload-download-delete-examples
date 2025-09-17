@@ -8,11 +8,11 @@ inputs:
   files:
     description: todo
     required: true
-  user-name:
+  comitter-name:
     description: todo
     required: false
     default: "github-actions[bot]"
-  user-email:
+  comitter-email:
     description: todo
     required: false
     default: "41898282+github-actions[bot]@users.noreply.github.com"
@@ -28,8 +28,8 @@ runs:
       env:
         BRANCH: ${{ inputs.branch }}
         FILES: ${{ inputs.files }}
-        USER_NAME: ${{ inputs.user-name }}
-        USER_EMAIL: ${{ inputs.user-email }}
+        COMMITTER_NAME: ${{ inputs.comitter-name }}
+        COMMITTER_EMAIL: ${{ inputs.user-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
       run: |
         git branch -D "$BRANCH" || true
@@ -43,8 +43,8 @@ runs:
             cp "../$file" .
             git add "$file"
           done
-          git -c "user.name=$USER_NAME" \
-            -c "user.email=$USER_EMAIL" \
+          git -c "user.name=$COMMITTER_NAME" \
+            -c "user.email=$COMMITTER_EMAIL" \
             commit --allow-empty --allow-empty-message -m "$COMMIT_MESSAGE"
           git push -f origin "HEAD:$BRANCH"
         )

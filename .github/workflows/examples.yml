@@ -13,6 +13,12 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      BRANCH_PREFIX: _orphan_
+      COMMITTER_NAME: github-actions[bot]
+      COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+      COMMIT_MESSAGE: examples
+
     steps:
       - uses: actions/checkout@v5
         with:
@@ -23,6 +29,11 @@ jobs:
           touch foo
           touch bar
           touch foobar
+
+      - id: now
+        shell: bash
+        run: |
+          echo "now=$(date +%s)" >> $GITHUB_OUTPUT
 
       - id: find-files
         shell: bash
@@ -36,8 +47,11 @@ jobs:
 
       - uses: ./.github/workflows/upload-to-orphan-branch
         with:
-          branch: _orphan_branch
+          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
           files: ${{ steps.find-files.outputs.files }}
+          comitter-name: ${{ env.COMMITTER_NAME }}
+          comitter-email: ${{ env.COMMITTER_EMAIL }}
+          commit-message: ${{ env.COMMIT_MESSAGE }}
 
       - uses: ./.github/workflows/download-from-orphan-branch
         with:

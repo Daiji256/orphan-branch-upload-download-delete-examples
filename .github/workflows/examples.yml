@@ -91,7 +91,9 @@ jobs:
 
             commit_date=$(git log -1 --format=%ct "origin/$branch")
             age=$((now - commit_date))
+            echo "age: $age"
             if [ "$age" -lt "$MAX_AGE_SECONDS" ]; then continue; fi
 
+            echo "delete $branch"
             git push origin --delete "$branch"
           done

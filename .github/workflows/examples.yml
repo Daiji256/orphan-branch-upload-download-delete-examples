@@ -21,22 +21,26 @@ jobs:
       MAX_AGE_SECONDS: 600
 
     steps:
-      - uses: actions/checkout@v5
+      - name: checkout
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - shell: bash
+      - name: make some files
+        shell: bash
         run: |
           touch foo
           touch bar
           touch foobar
 
-      - id: now
+      - name: get now
+        id: now
         shell: bash
         run: |
           echo "now=$(date +%s)" >> $GITHUB_OUTPUT
 
-      - id: find-files
+      - name: find files
+        id: find-files
         shell: bash
         run: |
           files=$(find . -type f -name "*bar")
@@ -46,7 +50,8 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
-      - uses: ./.github/workflows/upload-to-orphan-branch
+      - name: upload to orphan branch
+        uses: ./.github/workflows/upload-to-orphan-branch
         with:
           branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
           files: ${{ steps.find-files.outputs.files }}
@@ -54,16 +59,19 @@ jobs:
           comitter-email: ${{ env.COMMITTER_EMAIL }}
           commit-message: ${{ env.COMMIT_MESSAGE }}
 
-      - uses: ./.github/workflows/download-from-orphan-branch
+      - name: download from orphan branch
+        uses: ./.github/workflows/download-from-orphan-branch
         with:
           branch: _orphan_branch
           path: .download
 
-      - shell: bash
+      - name: check downloaded files
+        shell: bash
         run: |
           ls .download
 
-      - shell: bash
+      - name: delete old orphan branches
+        shell: bash
         run: |
           now=$(date +%s)
           for branch in $(git branch -r --format="%(refname:lstrip=3)"); do

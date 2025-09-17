@@ -57,7 +57,7 @@ jobs:
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch
         with:
-          branch: _orphan_branch
+          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
           path: .download
 
       - name: check downloaded files

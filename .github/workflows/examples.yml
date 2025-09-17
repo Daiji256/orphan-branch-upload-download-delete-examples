@@ -75,29 +75,22 @@ jobs:
         run: |
           now=$(date +%s)
           for branch in $(git branch -r --format="%(refname:lstrip=3)"); do
-            echo "debug1: $branch"
             if ! [[ "$branch" =~ "$BRANCH_PREFIX"* ]]; then continue; fi
 
-            echo "debug2: $branch"
             commit_count=$(git rev-list --count "origin/$branch")
             if [ "$commit_count" -ne 1 ]; then continue; fi
 
-            echo "debug3: $branch"
             committer_name=$(git log -1 --format=%an "origin/$branch")
             if [ "$committer_name" != "$COMMITTER_NAME" ]; then continue; fi
 
-            echo "debug4: $branch"
             committer_email=$(git log -1 --format=%ae "origin/$branch")
             if [ "$committer_email" != "$COMMITTER_EMAIL" ]; then continue; fi
 
-            echo "debug5: $branch"
             commit_message=$(git log -1 --format=%s "origin/$branch")
             if [ "$commit_message" != "$COMMIT_MESSAGE" ]; then continue; fi
 
-            echo "debug6: $branch"
             commit_date=$(git log -1 --format=%ct "origin/$branch")
             age=$((now - commit_date))
-            echo "age: $age"
             if [ "$age" -lt "$MAX_AGE_SECONDS" ]; then continue; fi
 
             echo "delete $branch"

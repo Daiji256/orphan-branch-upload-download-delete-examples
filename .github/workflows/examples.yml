@@ -39,8 +39,7 @@ jobs:
         id: now
         shell: bash
         run: |
-          # echo "now=$(date +%s)" >> $GITHUB_OUTPUT
-          echo "now=0" >> $GITHUB_OUTPUT
+          echo "now=$(date +%s)" >> $GITHUB_OUTPUT
 
       - name: upload to orphan branch
         uses: ./.github/workflows/upload-to-orphan-branch
@@ -49,7 +48,6 @@ jobs:
           comitter-name: ${{ env.COMMITTER_NAME }}
           comitter-email: ${{ env.COMMITTER_EMAIL }}
           commit-message: ${{ env.COMMIT_MESSAGE }}
-          overwrite: true
           path: |
             *bar
             dir1/**/?oo[abc]ar/*.txt

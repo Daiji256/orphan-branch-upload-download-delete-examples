@@ -1,6 +1,19 @@
 #!/bin/bash
 set -euo pipefail
 
+if [[ "$IF_NO_FILES_FOUND" != "ignore" && "$IF_NO_FILES_FOUND" != "error" ]]; then
+  echo "Invalid value for IF_NO_FILES_FOUND: $IF_NO_FILES_FOUND" >&2
+  exit 1
+fi
+if [[ "$OVERWRITE" != "true" && "$OVERWRITE" != "false" ]]; then
+  echo "Invalid value for OVERWRITE: $OVERWRITE" >&2
+  exit 1
+fi
+if [[ "$INCLUDE_HIDDEN_FILES" != "true" && "$INCLUDE_HIDDEN_FILES" != "false" ]]; then
+  echo "Invalid value for INCLUDE_HIDDEN_FILES: $INCLUDE_HIDDEN_FILES" >&2
+  exit 1
+fi
+
 is_hidden_file() {
   local file_path="$1"
   IFS="/" read -ra parts <<< "$file_path"

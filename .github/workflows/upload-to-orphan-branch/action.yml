@@ -20,6 +20,10 @@ inputs:
     description: todo
     required: false
     default: ""
+  overwrite:
+    description: todo
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -31,6 +35,7 @@ runs:
         COMMITTER_NAME: ${{ inputs.comitter-name }}
         COMMITTER_EMAIL: ${{ inputs.comitter-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
+        OVERWRITE: ${{ inputs.overwrite }}
       run: |
         shopt -s globstar
         declare -A files=()
@@ -60,6 +65,6 @@ runs:
           git -c "user.name=$COMMITTER_NAME" \
             -c "user.email=$COMMITTER_EMAIL" \
             commit --allow-empty --allow-empty-message -m "$COMMIT_MESSAGE"
-          git push -f origin "HEAD:$BRANCH"
+          git push $([ "$OVERWRITE" = true ] && echo -f) origin "HEAD:$BRANCH"
         )
         git worktree remove -f .upload_orphan_worktree

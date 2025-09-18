@@ -48,12 +48,11 @@ jobs:
           comitter-name: ${{ env.COMMITTER_NAME }}
           comitter-email: ${{ env.COMMITTER_EMAIL }}
           commit-message: ${{ env.COMMIT_MESSAGE }}
-          if-no-files-found: error
           path: |
-            *bar2
-            dir1/**/?oo[abc]ar/*.txt2
-            !foobar2
-            dir2/
+            *bar
+            dir1/**/?oo[abc]ar/*.txt
+            !foobar
+            dir/
 
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch

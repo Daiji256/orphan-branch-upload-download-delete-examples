@@ -34,6 +34,12 @@ jobs:
           touch dir/{foo,foobar}
           mkdir -p dir1/dir2/dir3/foobar
           touch dir1/dir2/dir3/foobar/{foo.txt,bar.md}
+          mkdir -p .dir1/dir2
+          touch .dir1/dir2/foo
+          mkdir -p .dir1/.dir2
+          touch dir1/.dir2/foo
+          touch dir1/dir2/.foo
+          touch dir1/dir2/foo
 
       - name: get now
         id: now
@@ -53,6 +59,10 @@ jobs:
             dir1/**/?oo[abc]ar/*.txt
             !foobar
             dir/
+            .dir1/dir2/foo
+            dir1/.dir2/foo
+            dir1/dir2/.foo
+            ./dir1/.dir2/foo
 
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch

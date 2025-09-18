@@ -32,9 +32,6 @@ runs:
         COMMITTER_EMAIL: ${{ inputs.comitter-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
       run: |
-        git branch -D "$BRANCH" || true
-        git worktree remove -f .upload_orphan_worktree || true
-        git worktree add --detach .upload_orphan_worktree
         declare -A files=()
         for file_path in $FILES_PATH; do
           if [[ "${file_path:0:1}" == "!" ]]; then
@@ -47,6 +44,9 @@ runs:
             done
           fi
         done
+        git branch -D "$BRANCH" || true
+        git worktree remove -f .upload_orphan_worktree || true
+        git worktree add --detach .upload_orphan_worktree
         (
           cd .upload_orphan_worktree
           git switch --orphan "$BRANCH"

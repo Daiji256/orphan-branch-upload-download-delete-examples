@@ -59,7 +59,7 @@ runs:
           ignore)
             ;;
           error)
-            if [ "${#files[@]}" -eq 0 ]; then
+            if [ ${#files[@]} -eq 0 ]; then
               echo "No files found" >&2
               exit 1
             fi

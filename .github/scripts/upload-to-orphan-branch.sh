@@ -45,20 +45,10 @@ for file_path in $FILES_PATH; do
   fi
 done
 
-case $IF_NO_FILES_FOUND in
-  ignore)
-    ;;
-  error)
-    if [ ${#files[@]} -eq 0 ]; then
-      echo "No files found" >&2
-      exit 1
-    fi
-    ;;
-  *)
-    echo "Unknown if-no-files-found: $IF_NO_FILES_FOUND" >&2
-    exit 1
-    ;;
-esac
+if [[ "$IF_NO_FILES_FOUND" = "error" && ${#files[@]} -eq 0 ]]; then
+  echo "No files found" >&2
+  exit 1
+fi
 
 git worktree remove -f .upload_orphan_worktree || true
 git worktree add --detach .upload_orphan_worktree

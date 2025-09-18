@@ -50,9 +50,6 @@ jobs:
           commit-message: ${{ env.COMMIT_MESSAGE }}
           path: |
             *bar
-            dir1/**/?oo[abc]ar/*.txt
-            !foobar
-            dir/
 
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch

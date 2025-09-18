@@ -63,7 +63,7 @@ jobs:
             .dir1/dir2/foo
             dir1/.dir2/foo
             dir1/dir2/.foo
-            ./dir1/.dir2/foo
+            ./dir1/dir2/foo
 
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch

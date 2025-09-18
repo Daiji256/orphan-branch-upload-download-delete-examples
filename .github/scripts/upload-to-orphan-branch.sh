@@ -32,11 +32,11 @@ shopt -s globstar
 declare -A files=()
 for file_path in $FILES_PATH; do
   if [[ "${file_path:0:1}" == "!" ]]; then
-    for file in $(find ${file_path:1} -type f); do
+    find "${file_path:1}" -type f -print0 | while IFS= read -r -d "" file; do
       unset files["$file"]
     done
   else
-    for file in $(find $file_path -type f); do
+    find $file_path -type f -print0 | while IFS= read -r -d "" file; do
       if [ "$INCLUDE_HIDDEN_FILES" != "true" ] && is_hidden_file "$file"; then
         continue
       fi

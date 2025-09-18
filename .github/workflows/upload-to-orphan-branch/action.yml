@@ -59,7 +59,7 @@ runs:
             cp "../$file" .
 
             echo "git add $file"
-            git add "$file"
+            # git add "$file"
           done
           git -c "user.name=$COMMITTER_NAME" \
             -c "user.email=$COMMITTER_EMAIL" \

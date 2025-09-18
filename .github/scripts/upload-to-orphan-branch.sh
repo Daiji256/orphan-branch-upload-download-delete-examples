@@ -36,7 +36,7 @@ for file_path in $FILES_PATH; do
       unset "files[$file]"
     done
   else
-    find $file_path -type f -print0 | while IFS= read -r -d "" file; do
+    find "$file_path" -type f -print0 | while IFS= read -r -d "" file; do
       if [ "$INCLUDE_HIDDEN_FILES" != "true" ] && is_hidden_file "$file"; then
         continue
       fi

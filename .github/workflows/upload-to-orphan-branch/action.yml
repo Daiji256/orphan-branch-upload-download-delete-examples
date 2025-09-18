@@ -32,6 +32,7 @@ runs:
         COMMITTER_EMAIL: ${{ inputs.comitter-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
       run: |
+        shopt -s globstar
         declare -A files=()
         for file_path in $FILES_PATH; do
           if [[ "${file_path:0:1}" == "!" ]]; then

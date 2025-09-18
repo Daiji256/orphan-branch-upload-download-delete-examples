@@ -45,7 +45,6 @@ runs:
             done
           fi
         done
-        git branch -D "$BRANCH" || true
         git worktree remove -f .upload_orphan_worktree || true
         git worktree add --detach .upload_orphan_worktree
         (

@@ -36,7 +36,7 @@ jobs:
           touch dir1/dir2/dir3/foobar/{foo.txt,bar.md}
           mkdir -p .dir1/dir2
           touch .dir1/dir2/foo
-          mkdir -p .dir1/.dir2
+          mkdir -p dir1/.dir2
           touch dir1/.dir2/foo
           touch dir1/dir2/.foo
           touch dir1/dir2/foo

@@ -51,6 +51,7 @@ jobs:
           path: |
             *bar
             !foobar
+            dir/
 
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch

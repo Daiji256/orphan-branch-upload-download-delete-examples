@@ -39,7 +39,8 @@ jobs:
         id: now
         shell: bash
         run: |
-          echo "now=$(date +%s)" >> $GITHUB_OUTPUT
+          # echo "now=$(date +%s)" >> $GITHUB_OUTPUT
+          echo "now=0" >> $GITHUB_OUTPUT
 
       - name: upload to orphan branch
         uses: ./.github/workflows/upload-to-orphan-branch

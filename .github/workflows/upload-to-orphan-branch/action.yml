@@ -55,6 +55,7 @@ runs:
           git switch --orphan "$BRANCH"
           git reset --hard
           for file in "${!files[@]}"; do
+            mkdir -p "$(dirname "$file")"
             cp "../$file" .
             git add "$file"
           done

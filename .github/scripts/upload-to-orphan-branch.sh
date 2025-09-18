@@ -37,10 +37,8 @@ for file_path in $FILES_PATH; do
     done
   else
     for file in $(find $file_path -type f); do
-      if [ "$INCLUDE_HIDDEN_FILES" != "true" ]; then
-        if is_hidden_file "$file"; then
-          continue
-        fi
+      if [ "$INCLUDE_HIDDEN_FILES" != "true" ] && is_hidden_file "$file"; then
+        continue
       fi
       files["$file"]=1
     done

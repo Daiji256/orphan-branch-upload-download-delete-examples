@@ -49,10 +49,10 @@ jobs:
           comitter-email: ${{ env.COMMITTER_EMAIL }}
           commit-message: ${{ env.COMMIT_MESSAGE }}
           path: |
-            *bar
-            dir1/**/?oo[abc]ar/*.txt
-            !foobar
-            dir/
+            *bar2
+            dir1/**/?oo[abc]ar/*.txt2
+            !foobar2
+            dir2/
 
       - name: download from orphan branch
         uses: ./.github/workflows/download-from-orphan-branch

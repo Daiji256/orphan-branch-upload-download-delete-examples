@@ -20,6 +20,10 @@ inputs:
     description: todo
     required: false
     default: ""
+  if-no-files-found:
+    description: todo
+    required: false
+    default: "ignore"
   overwrite:
     description: todo
     required: false
@@ -35,6 +39,7 @@ runs:
         COMMITTER_NAME: ${{ inputs.comitter-name }}
         COMMITTER_EMAIL: ${{ inputs.comitter-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
+        IF_NO_FILES_FOUND: ${{ inputs.if-no-files-found }}
         OVERWRITE: ${{ inputs.overwrite }}
       run: |
         shopt -s globstar
@@ -50,6 +55,20 @@ runs:
             done
           fi
         done
+        case $IF_NO_FILES_FOUND in
+          ignore)
+            ;;
+          error)
+            if [ "${#files[@]}" -eq 0 ]; then
+              echo "No files found" >&2
+              exit 1
+            fi
+            ;;
+          *)
+            echo "Unknown if-no-files-found: $IF_NO_FILES_FOUND" >&2
+            exit 1
+            ;;
+        esac
         git worktree remove -f .upload_orphan_worktree || true
         git worktree add --detach .upload_orphan_worktree
         (

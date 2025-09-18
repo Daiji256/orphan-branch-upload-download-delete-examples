@@ -28,6 +28,10 @@ inputs:
     description: todo
     required: false
     default: "false"
+  include-hidden-files:
+    description: todo
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -41,7 +45,21 @@ runs:
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
         IF_NO_FILES_FOUND: ${{ inputs.if-no-files-found }}
         OVERWRITE: ${{ inputs.overwrite }}
+        INCLUDE_HIDDEN_FILES: ${{ inputs.include-hidden-files }}
       run: |
+        is_hidden_file() {
+          local file_path="$1"
+          IFS="/" read -ra parts <<< "$file_path"
+          for part in "${parts[@]}"; do
+            if [[ "$part" == "." || "$part" == ".." ]]; then
+              continue
+            fi
+            if [[ "$part" == .* ]]; then
+              return 0
+            fi
+          done
+          return 1
+        }
         shopt -s globstar
         declare -A files=()
         for file_path in $FILES_PATH; do
@@ -51,6 +69,11 @@ runs:
             done
           else
             for file in $(find $file_path -type f); do
+              if [ "$INCLUDE_HIDDEN_FILES" != "true" ]; then
+                if is_hidden_file "$file"; then
+                  continue
+                fi
+              fi
               files["$file"]=1
             done
           fi

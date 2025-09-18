@@ -63,7 +63,7 @@ jobs:
       - name: check downloaded files
         shell: bash
         run: |
-          ls .download
+          find .download
 
       - name: delete old orphan branches
         shell: bash

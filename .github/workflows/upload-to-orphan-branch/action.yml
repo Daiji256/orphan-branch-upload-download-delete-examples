@@ -53,8 +53,9 @@ runs:
           git switch --orphan "$BRANCH"
           git reset --hard
           for file in "${!files[@]}"; do
-            mkdir -p "$(dirname "$file")"
-            cp "../$file" .
+            dir="$(dirname "$file")"
+            mkdir -p "$dir"
+            cp "../$file" "$dir"
             git add "$file"
           done
           git -c "user.name=$COMMITTER_NAME" \

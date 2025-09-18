@@ -55,6 +55,7 @@ runs:
           for file in "${!files[@]}"; do
             mkdir -p "$(dirname "$file")"
             cp "../$file" .
+            ls "$file"
             git add "$file"
           done
           git -c "user.name=$COMMITTER_NAME" \

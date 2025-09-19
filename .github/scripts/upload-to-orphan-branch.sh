@@ -59,7 +59,7 @@ git worktree add --detach .upload_orphan_worktree
   git switch --orphan "$BRANCH"
   git reset --hard
 
-  "${!files[@]}" | while IFS= read -r file; do
+  for file in "${!files[@]}"; do
     echo "Adding file: $file"
     dir="$(dirname "$file")"
     mkdir -p "$dir"

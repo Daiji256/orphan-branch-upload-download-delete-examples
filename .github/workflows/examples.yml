@@ -66,7 +66,7 @@ jobs:
             foo/foo/foo/
 
       - name: download from orphan branch
-        uses: ./.github/workflows/download-from-orphan-branch
+        uses: daiji256/download-from-orphan-branch@v0.1.0
         with:
           branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
           path: .download

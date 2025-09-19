@@ -7,7 +7,7 @@ inputs:
     description: "Branch name to download from."
     required: true
   path:
-    description: "Destination path. Destination path. Defaults to $GITHUB_WORKSPACE."
+    description: "Destination path. Defaults to $GITHUB_WORKSPACE."
     required: false
     default: ${{ github.workspace }}
 

@@ -50,8 +50,6 @@ if [[ "$IF_NO_FILES_FOUND" = "error" && ${#files[@]} -eq 0 ]]; then
   exit 1
 fi
 
-echo "$files"
-
 git worktree remove -f .upload_orphan_worktree || true
 git worktree add --detach .upload_orphan_worktree
 
@@ -60,6 +58,7 @@ git worktree add --detach .upload_orphan_worktree
   git switch --orphan "$BRANCH"
   git reset --hard
 
+  echo "Preparing to add ${#files[@]} files..."
   for file in "${!files[@]}"; do
     echo "Adding file: $file"
     dir="$(dirname "$file")"

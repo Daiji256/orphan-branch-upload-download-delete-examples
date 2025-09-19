@@ -41,6 +41,7 @@ for file_path in $FILES_PATH; do
       fi
       echo "Found file: $file"
       files["$file"]=1
+      echo "Files: ${!files[@]}"
     done
   fi
 done

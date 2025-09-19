@@ -9,11 +9,11 @@ inputs:
   path:
     description: "A file or directory or wildcard pattern that describes what to upload."
     required: true
-  comitter-name:
+  committer-name:
     description: "Name of the committer."
     required: false
     default: "github-actions[bot]"
-  comitter-email:
+  committer-email:
     description: "Email of the committer."
     required: false
     default: "41898282+github-actions[bot]@users.noreply.github.com"
@@ -50,8 +50,8 @@ runs:
       env:
         BRANCH: ${{ inputs.branch }}
         FILES_PATH: ${{ inputs.path }}
-        COMMITTER_NAME: ${{ inputs.comitter-name }}
-        COMMITTER_EMAIL: ${{ inputs.comitter-email }}
+        COMMITTER_NAME: ${{ inputs.committer-name }}
+        COMMITTER_EMAIL: ${{ inputs.committer-email }}
         COMMIT_MESSAGE: ${{ inputs.commit-message }}
         IF_NO_FILES_FOUND: ${{ inputs.if-no-files-found }}
         OVERWRITE: ${{ inputs.overwrite }}

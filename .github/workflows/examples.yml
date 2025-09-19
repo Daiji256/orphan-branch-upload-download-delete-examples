@@ -51,8 +51,8 @@ jobs:
         uses: ./.github/workflows/upload-to-orphan-branch
         with:
           branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
-          comitter-name: ${{ env.COMMITTER_NAME }}
-          comitter-email: ${{ env.COMMITTER_EMAIL }}
+          committer-name: ${{ env.COMMITTER_NAME }}
+          committer-email: ${{ env.COMMITTER_EMAIL }}
           commit-message: ${{ env.COMMIT_MESSAGE }}
           path: |
             *bar

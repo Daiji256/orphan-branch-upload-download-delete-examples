@@ -39,13 +39,10 @@ for file_path in $FILES_PATH; do
       if [[ "$INCLUDE_HIDDEN_FILES" == "false" && $(is_hidden_file "$file") ]]; then
         continue
       fi
-      echo "Found file: $file"
       files["$file"]=1
     done< <(find "$file_path" -type f -print0)
   fi
 done
-
-echo "Files: ${!files[@]}"
 
 if [[ "$IF_NO_FILES_FOUND" = "error" && ${#files[@]} -eq 0 ]]; then
   echo "No files found" >&2

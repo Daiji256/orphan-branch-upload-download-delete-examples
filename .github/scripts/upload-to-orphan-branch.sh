@@ -33,7 +33,7 @@ declare -A files=()
 for file_path in $FILES_PATH; do
   if [[ "${file_path:0:1}" == "!" ]]; then
     find "${file_path:1}" -type f -print0 | while IFS= read -r -d "" file; do
-      unset files["$file"]
+      unset "files[$file]"
     done
   else
     find "$file_path" -type f -print0 | while IFS= read -r -d "" file; do

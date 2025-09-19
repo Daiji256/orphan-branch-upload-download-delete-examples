@@ -29,7 +29,7 @@ is_hidden_file() {
 
 shopt -s globstar
 declare -A files=()
-for file_path in $FILES_PATH; do
+for file_path in "$FILES_PATH"; do
   if [[ "${file_path:0:1}" == "!" ]]; then
     while IFS= read -r -d "" file; do
       unset "files[$file]"

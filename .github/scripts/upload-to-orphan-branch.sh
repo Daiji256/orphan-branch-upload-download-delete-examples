@@ -37,7 +37,7 @@ for file_path in $FILES_PATH; do
     done
   else
     find "$file_path" -type f -print0 | while IFS= read -r -d "" file; do
-      if [ "$INCLUDE_HIDDEN_FILES" != "true" ] && is_hidden_file "$file"; then
+      if [[ "$INCLUDE_HIDDEN_FILES" == "false" && is_hidden_file "$file" ]]; then
         continue
       fi
       files["$file"]=1
@@ -68,7 +68,7 @@ git worktree add --detach .upload_orphan_worktree
   git -c "user.name=$COMMITTER_NAME" \
     -c "user.email=$COMMITTER_EMAIL" \
     commit --allow-empty --allow-empty-message -m "$COMMIT_MESSAGE"
-  if [ "$OVERWRITE" = true ]; then
+  if [[ "$OVERWRITE" == true ]]; then
     git push -f origin "HEAD:$BRANCH"
   else
     git push origin "HEAD:$BRANCH"

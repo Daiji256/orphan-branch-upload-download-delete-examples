@@ -71,7 +71,7 @@ git worktree add --detach .upload_orphan_worktree
   git -c "user.name=$COMMITTER_NAME" \
     -c "user.email=$COMMITTER_EMAIL" \
     commit --allow-empty --allow-empty-message -m "$COMMIT_MESSAGE"
-  if [[ "$OVERWRITE" == true ]]; then
+  if [[ "$OVERWRITE" == "true" ]]; then
     git push -f origin "HEAD:$BRANCH"
   else
     git push origin "HEAD:$BRANCH"

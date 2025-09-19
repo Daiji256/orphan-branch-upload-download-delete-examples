@@ -31,8 +31,10 @@ is_hidden_file() {
 shopt -s globstar
 declare -A files=()
 for file_path in $FILES_PATH; do
+  echo "Processing path: $file_path"
   if [[ "${file_path:0:1}" == "!" ]]; then
     find "${file_path:1}" -type f -print0 | while IFS= read -r -d "" file; do
+      echo "Excluding file: $file"
       unset "files[$file]"
     done
   else
@@ -40,6 +42,7 @@ for file_path in $FILES_PATH; do
       if [[ "$INCLUDE_HIDDEN_FILES" == "false" && $(is_hidden_file "$file") ]]; then
         continue
       fi
+      echo "Including file: $file"
       files["$file"]=1
     done
   fi

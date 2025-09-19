@@ -48,7 +48,7 @@ jobs:
           echo "now=$(date +%s)" >> $GITHUB_OUTPUT
 
       - name: upload to orphan branch
-        uses: ./.github/workflows/upload-to-orphan-branch
+        uses: daiji256/upload-to-orphan-branch@v0.1.1
         with:
           branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
           committer-name: ${{ env.COMMITTER_NAME }}

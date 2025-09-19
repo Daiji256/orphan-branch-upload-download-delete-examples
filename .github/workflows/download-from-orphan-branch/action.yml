@@ -18,6 +18,4 @@ runs:
         BRANCH: ${{ inputs.branch }}
         DOWNLOAD_PATH: ${{ inputs.path }}
       run: |
-        mkdir -p "$DOWNLOAD_PATH"
-        git fetch origin "$BRANCH"
-        git "--work-tree=$DOWNLOAD_PATH" checkout "origin/$BRANCH" -- . || true
+        bash ./.github/scripts/download-from-orphan-branch.sh

@@ -39,6 +39,7 @@ for file_path in $FILES_PATH; do
       if [[ "$INCLUDE_HIDDEN_FILES" == "false" && $(is_hidden_file "$file") ]]; then
         continue
       fi
+      echo "Found file: $file"
       files["$file"]=1
     done
   fi
@@ -57,7 +58,6 @@ git worktree add --detach .upload_orphan_worktree
   git switch --orphan "$BRANCH"
   git reset --hard
 
-  echo "Preparing to add ${#files[@]} files..."
   for file in "${!files[@]}"; do
     echo "Adding file: $file"
     dir="$(dirname "$file")"

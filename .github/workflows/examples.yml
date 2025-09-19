@@ -1,0 +1,104 @@
+name: examples
+
+on: pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  examples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    env:
+      BRANCH_PREFIX: _orphan_
+      COMMITTER_NAME: github-actions[bot]
+      COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+      COMMIT_MESSAGE: examples
+      MAX_AGE_SECONDS: 600
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: make some files
+        shell: bash
+        run: |
+          touch {foo,bar,foobar}
+          mkdir -p dir
+          touch dir/{foo,foobar}
+          mkdir -p dir1/dir2/dir3/foobar
+          touch dir1/dir2/dir3/foobar/{foo.txt,bar.md}
+          mkdir -p .dir1/dir2
+          touch .dir1/dir2/foo
+          mkdir -p dir1/.dir2
+          touch dir1/.dir2/foo
+          touch dir1/dir2/.foo
+          touch dir1/dir2/foo
+
+      - name: get now
+        id: now
+        shell: bash
+        run: |
+          echo "now=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: upload to orphan branch
+        uses: ./.github/workflows/upload-to-orphan-branch
+        with:
+          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
+          committer-name: ${{ env.COMMITTER_NAME }}
+          committer-email: ${{ env.COMMITTER_EMAIL }}
+          commit-message: ${{ env.COMMIT_MESSAGE }}
+          path: |
+            *bar
+            dir1/**/?oo[abc]ar/*.txt
+            !foobar
+            dir/
+            .dir1/dir2/foo
+            dir1/.dir2/foo
+            dir1/dir2/.foo
+            ./dir1/dir2/foo
+            foo/foo/foo/
+
+      - name: download from orphan branch
+        uses: ./.github/workflows/download-from-orphan-branch
+        with:
+          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
+          path: .download
+
+      - name: check downloaded files
+        shell: bash
+        run: |
+          find .download -type f
+
+      - name: delete old orphan branches
+        shell: bash
+        run: |
+          now=$(date +%s)
+          git branch -r --format="%(refname:lstrip=3)" | while read -r branch; do
+            if ! [[ "$branch" =~ "$BRANCH_PREFIX"* ]]; then continue; fi
+
+            commit_count=$(git rev-list --count "origin/$branch")
+            if [ "$commit_count" -ne 1 ]; then continue; fi
+
+            committer_name=$(git log -1 --format=%an "origin/$branch")
+            if [ "$committer_name" != "$COMMITTER_NAME" ]; then continue; fi
+
+            committer_email=$(git log -1 --format=%ae "origin/$branch")
+            if [ "$committer_email" != "$COMMITTER_EMAIL" ]; then continue; fi
+
+            commit_message=$(git log -1 --format=%s "origin/$branch")
+            if [ "$commit_message" != "$COMMIT_MESSAGE" ]; then continue; fi
+
+            commit_date=$(git log -1 --format=%ct "origin/$branch")
+            age=$((now - commit_date))
+            if [ "$age" -lt "$MAX_AGE_SECONDS" ]; then continue; fi
+
+            echo "delete $branch"
+            git push origin --delete "$branch"
+          done

@@ -33,14 +33,14 @@ for file_path in $FILES_PATH; do
   if [[ "${file_path:0:1}" == "!" ]]; then
     while IFS= read -r -d "" file; do
       unset "files[$file]"
-    done< <(find "${file_path:1}" -type f -print0)
+    done < <(find "${file_path:1}" -type f -print0)
   else
     while IFS= read -r -d "" file; do
       if [[ "$INCLUDE_HIDDEN_FILES" == "false" ]] && is_hidden_file "$file"; then
         continue
       fi
       files["$file"]=1
-    done< <(find "$file_path" -type f -print0)
+    done < <(find "$file_path" -type f -print0)
   fi
 done
 

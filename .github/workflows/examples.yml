@@ -80,7 +80,7 @@ jobs:
         shell: bash
         run: |
           now=$(date +%s)
-          while IFS= read -r -d "" branch; do
+          git branch -r --format="%(refname:lstrip=3)" | while read -r branch; do
             if ! [[ "$branch" =~ "$BRANCH_PREFIX"* ]]; then continue; fi
 
             commit_count=$(git rev-list --count "origin/$branch")
@@ -101,4 +101,4 @@ jobs:
 
             echo "delete $branch"
             git push origin --delete "$branch"
-          done < <(git branch -r --format="%(refname:lstrip=3)")
+          done

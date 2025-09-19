@@ -58,7 +58,6 @@ git worktree add --detach .upload_orphan_worktree
   git reset --hard
 
   for file in "${!files[@]}"; do
-    echo "Adding file: $file"
     dir="$(dirname "$file")"
     mkdir -p "$dir"
     cp "../$file" "$dir"

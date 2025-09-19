@@ -21,10 +21,10 @@ is_hidden_file() {
       continue
     fi
     if [[ "$part" == .* ]]; then
-      return 1
+      return "true"
     fi
   done
-  return 0
+  return "false"
 }
 
 shopt -s globstar
@@ -36,7 +36,7 @@ for file_path in $FILES_PATH; do
     done< <(find "${file_path:1}" -type f -print0)
   else
     while IFS= read -r -d "" file; do
-      if [[ "$INCLUDE_HIDDEN_FILES" == "false" && $(is_hidden_file "$file") ]]; then
+      if [[ "$INCLUDE_HIDDEN_FILES" == "false" && $(is_hidden_file "$file") == "true" ]]; then
         continue
       fi
       files["$file"]=1

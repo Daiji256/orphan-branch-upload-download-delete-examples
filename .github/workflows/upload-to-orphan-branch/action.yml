@@ -1,35 +1,45 @@
-name: upload-to-orphan-branch
-description: todo
+name: "Upload to orphan branch"
+description: "Upload files to an orphan branch."
+author: "Daiji256"
 
 inputs:
   branch:
-    description: todo
+    description: "Branch name to create or overwrite."
     required: true
   path:
-    description: todo
+    description: "A file or directory or wildcard pattern that describes what to upload."
     required: true
   comitter-name:
-    description: todo
+    description: "Name of the committer."
     required: false
     default: "github-actions[bot]"
   comitter-email:
-    description: todo
+    description: "Email of the committer."
     required: false
     default: "41898282+github-actions[bot]@users.noreply.github.com"
   commit-message:
-    description: todo
+    description: "Commit message."
     required: false
     default: ""
   if-no-files-found:
-    description: todo
+    description: >
+      The desired behavior if no files are found using the provided path.
+
+      Available Options:
+      - ignore: Upload empty branch
+      - error: Fail the action with an error message
     required: false
     default: "ignore"
   overwrite:
-    description: todo
+    description: >
+      If true, overwrite branch with new files.
+      If false, fail if branch already exists.
     required: false
     default: "false"
   include-hidden-files:
-    description: todo
+    description: >
+      If true, include hidden files.
+      If false, exclude hidden files.
     required: false
     default: "false"
 

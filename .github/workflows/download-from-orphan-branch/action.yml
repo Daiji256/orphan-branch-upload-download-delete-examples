@@ -1,12 +1,13 @@
-name: download-from-orphan-branch
-description: todo
+name: "Download from orphan branch"
+description: "Download files from an orphan branch."
+author: "Daiji256"
 
 inputs:
   branch:
-    description: todo
+    description: "Branch name to download from."
     required: true
   path:
-    description: todo
+    description: "Destination path. Destination path. Defaults to $GITHUB_WORKSPACE."
     required: false
     default: ${{ github.workspace }}
 

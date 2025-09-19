@@ -21,10 +21,10 @@ is_hidden_file() {
       continue
     fi
     if [[ "$part" == .* ]]; then
-      return 0
+      return 1
     fi
   done
-  return 1
+  return 0
 }
 
 shopt -s globstar

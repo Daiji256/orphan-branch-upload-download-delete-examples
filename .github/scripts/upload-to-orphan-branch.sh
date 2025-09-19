@@ -15,8 +15,7 @@ if [[ "$INCLUDE_HIDDEN_FILES" != "true" && "$INCLUDE_HIDDEN_FILES" != "false" ]]
 fi
 
 is_hidden_file() {
-  local file_path="$1"
-  IFS="/" read -ra parts <<< "$file_path"
+  IFS="/" read -ra parts <<< "$1"
   for part in "${parts[@]}"; do
     if [[ "$part" == "." || "$part" == ".." ]]; then
       continue

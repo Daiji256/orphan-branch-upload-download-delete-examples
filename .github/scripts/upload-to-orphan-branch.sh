@@ -37,7 +37,7 @@ for file_path in $FILES_PATH; do
     done
   else
     find "$file_path" -type f -print0 | while IFS= read -r -d "" file; do
-      if [[ "$INCLUDE_HIDDEN_FILES" == "false" && is_hidden_file "$file" ]]; then
+      if [[ "$INCLUDE_HIDDEN_FILES" == "false" && $(is_hidden_file "$file") ]]; then
         continue
       fi
       files["$file"]=1

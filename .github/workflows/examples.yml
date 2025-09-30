@@ -13,9 +13,6 @@ jobs:
     permissions:
       contents: write
 
-    env:
-      BRANCH_PREFIX: _orphan_
-
     steps:
       - name: checkout
         uses: actions/checkout@v5
@@ -46,7 +43,7 @@ jobs:
       - name: upload to orphan branch
         uses: daiji256/upload-to-orphan-branch@v0.1.1
         with:
-          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
+          branch: _orphan_${{ steps.now.outputs.now }}
           path: |
             *bar
             dir1/**/?oo[abc]ar/*.txt
@@ -61,7 +58,7 @@ jobs:
       - name: download from orphan branch
         uses: daiji256/download-from-orphan-branch@v0.1.0
         with:
-          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
+          branch: _orphan_${{ steps.now.outputs.now }}
           path: .download
 
       - name: check downloaded files
@@ -72,5 +69,5 @@ jobs:
       - name: delete old orphan branches
         uses: daiji256/delete-orphan-branch@de8f16a5bf2e643ea7d1470c362f5d958acb1a67
         with:
-          branch-regex: ${{ env.BRANCH_PREFIX }}*
+          branch-regex: _orphan_*
           older-than-seconds: 600

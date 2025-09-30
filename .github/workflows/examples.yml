@@ -67,7 +67,7 @@ jobs:
           find .download -type f
 
       - name: delete old orphan branches
-        uses: daiji256/delete-orphan-branch@de8f16a5bf2e643ea7d1470c362f5d958acb1a67
+        uses: daiji256/delete-orphan-branch@v0.1.0
         with:
           branch-regex: _orphan_*
           older-than-seconds: 600

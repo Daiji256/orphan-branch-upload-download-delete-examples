@@ -72,5 +72,5 @@ jobs:
       - name: delete old orphan branches
         uses: daiji256/delete-orphan-branch@de8f16a5bf2e643ea7d1470c362f5d958acb1a67
         with:
-          branch: ${{ env.BRANCH_PREFIX }}*
+          branch-regex: ${{ env.BRANCH_PREFIX }}*
           older-than-seconds: 600

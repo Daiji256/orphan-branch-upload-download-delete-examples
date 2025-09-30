@@ -13,13 +13,6 @@ jobs:
     permissions:
       contents: write
 
-    env:
-      BRANCH_PREFIX: _orphan_
-      COMMITTER_NAME: github-actions[bot]
-      COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-      COMMIT_MESSAGE: examples
-      MAX_AGE_SECONDS: 600
-
     steps:
       - name: checkout
         uses: actions/checkout@v5
@@ -50,10 +43,7 @@ jobs:
       - name: upload to orphan branch
         uses: daiji256/upload-to-orphan-branch@v0.1.1
         with:
-          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
-          committer-name: ${{ env.COMMITTER_NAME }}
-          committer-email: ${{ env.COMMITTER_EMAIL }}
-          commit-message: ${{ env.COMMIT_MESSAGE }}
+          branch: _orphan_${{ steps.now.outputs.now }}
           path: |
             *bar
             dir1/**/?oo[abc]ar/*.txt
@@ -68,7 +58,7 @@ jobs:
       - name: download from orphan branch
         uses: daiji256/download-from-orphan-branch@v0.1.0
         with:
-          branch: ${{ env.BRANCH_PREFIX }}${{ steps.now.outputs.now }}
+          branch: _orphan_${{ steps.now.outputs.now }}
           path: .download
 
       - name: check downloaded files
@@ -77,28 +67,7 @@ jobs:
           find .download -type f
 
       - name: delete old orphan branches
-        shell: bash
-        run: |
-          now=$(date +%s)
-          git branch -r --format="%(refname:lstrip=3)" | while read -r branch; do
-            if ! [[ "$branch" =~ "$BRANCH_PREFIX"* ]]; then continue; fi
-
-            commit_count=$(git rev-list --count "origin/$branch")
-            if [ "$commit_count" -ne 1 ]; then continue; fi
-
-            committer_name=$(git log -1 --format=%an "origin/$branch")
-            if [ "$committer_name" != "$COMMITTER_NAME" ]; then continue; fi
-
-            committer_email=$(git log -1 --format=%ae "origin/$branch")
-            if [ "$committer_email" != "$COMMITTER_EMAIL" ]; then continue; fi
-
-            commit_message=$(git log -1 --format=%s "origin/$branch")
-            if [ "$commit_message" != "$COMMIT_MESSAGE" ]; then continue; fi
-
-            commit_date=$(git log -1 --format=%ct "origin/$branch")
-            age=$((now - commit_date))
-            if [ "$age" -lt "$MAX_AGE_SECONDS" ]; then continue; fi
-
-            echo "delete $branch"
-            git push origin --delete "$branch"
-          done
+        uses: daiji256/delete-orphan-branch@v0.1.0
+        with:
+          branch-regex: _orphan_*
+          older-than-seconds: 600

@@ -15,7 +15,7 @@ The pattern demonstrates how to:
 
 ## When to Use
 
-Use this pattern when you want keep everything entirely within GitHub (no external storage) and need a simple way to persist and later reference lightweight generated outputs across workflows. Outputs stored on an orphan branch can be directly linked or embedded in Issues, PRs, or README via raw URLs like: `https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path>`.
+Use this pattern when you want to keep everything entirely within GitHub (no external storage) and need a simple way to persist and later reference lightweight generated outputs across workflows. Outputs stored on an orphan branch can be directly linked or embedded in Issues, PRs, or README via raw URLs like: `https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path>`.
 
 ## Notes
 

@@ -70,4 +70,4 @@ jobs:
         uses: daiji256/delete-orphan-branch@v0.1.0
         with:
           branch-regex: _orphan_*
-          older-than-seconds: 600
+          older-than-seconds: 600 # 10 minutes

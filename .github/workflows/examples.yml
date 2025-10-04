@@ -69,5 +69,5 @@ jobs:
       - name: delete old orphan branches
         uses: daiji256/delete-orphan-branch@v1
         with:
-          branch-regex: _orphan_*
+          branch-regex: _orphan_.*
           older-than-seconds: 600 # 10 minutes

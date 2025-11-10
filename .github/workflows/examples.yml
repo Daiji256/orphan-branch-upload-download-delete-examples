@@ -9,6 +9,7 @@ concurrency:
 jobs:
   examples:
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest

@@ -8,7 +8,18 @@ concurrency:
 
 jobs:
   examples:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - ubuntu-slim
+          - macos-latest
+          - macos-15-intel
+          - windows-latest
+          - windows-11-arm
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     permissions:
       contents: write
@@ -43,7 +54,7 @@ jobs:
       - name: upload to orphan branch
         uses: daiji256/upload-to-orphan-branch@v1
         with:
-          branch: _orphan_${{ steps.now.outputs.now }}
+          branch: _orphan_${{ matrix.os }}_${{ steps.now.outputs.now }}
           path: |
             *bar
             dir1/**/?oo[abc]ar/*.txt
@@ -58,7 +69,7 @@ jobs:
       - name: download from orphan branch
         uses: daiji256/download-from-orphan-branch@v1
         with:
-          branch: _orphan_${{ steps.now.outputs.now }}
+          branch: _orphan_${{ matrix.os }}_${{ steps.now.outputs.now }}
           path: .download
 
       - name: check downloaded files
@@ -69,5 +80,5 @@ jobs:
       - name: delete old orphan branches
         uses: daiji256/delete-orphan-branch@v1
         with:
-          branch-regex: _orphan_.*
+          branch-regex: _orphan_${{ matrix.os }}_.*
           older-than-seconds: 600 # 10 minutes
